@@ -10,6 +10,7 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,17 +23,13 @@ import java.io.IOException;
 @EnableMongoRepositories(basePackages = "com.jorgesaldivar.mongodbit.repository")
 public class MongoConfigTest {
 
-//    @Bean
-//    public MongoTemplate mongoTemplate() throws IOException {
-//        EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
-//        mongo.setBindIp("localhost");
-//        MongoClient mongoClient = mongo.getObject();
-//        MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, "embedded_database");
-//        return mongoTemplate;
-//    }
+    @Bean
+    public MongoTemplate mongoTemplate(@Value("${enable.flapdoodle:true}") Boolean flapdoodle) throws IOException {
+        return flapdoodle ? flapdoodle() : jirutka();
+    }
 
     @Bean
-    public MongoTemplate mongoTemplate() throws IOException {
+    public MongoTemplate flapdoodle() throws IOException {
 
         String bindIp = "localhost";
         int port = SocketUtils.findAvailableTcpPort();
@@ -50,6 +47,15 @@ public class MongoConfigTest {
         MongoTemplate mongoTemplate = new MongoTemplate(mongo, "embedded_database");
         return mongoTemplate;
 
+    }
+
+    private MongoTemplate jirutka() throws IOException {
+
+        EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
+        mongo.setBindIp("localhost");
+        MongoClient mongoClient = mongo.getObject();
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, "embedded_database");
+        return mongoTemplate;
     }
 
 }
