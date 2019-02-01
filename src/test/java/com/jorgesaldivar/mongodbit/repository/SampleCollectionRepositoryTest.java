@@ -11,8 +11,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Embedded Mongo DB with Spring (not boot)
+ * Mongo configuration at {@link MongoConfigTest}
  *
- * @see <a href="https://springframework.guru/spring-boot-with-embedded-mongodb/">Embedded MongoDB</a>
+ * @see <a href="https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo">Embedded MongoDB using flapdoodle</a>
+ * @see <a href="https://springframework.guru/spring-boot-with-embedded-mongodb/">Embedded MongoDB using jirutka code</a>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MongoConfigTest.class})
